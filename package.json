@@ -1,0 +1,36 @@
+{
+  "name": "storage-blobs-node-quickstart",
+  "version": "1.0.0",
+  "description": "Learn how to use Node.js to upload, download, and list block blobs in a container in Azure Blob storage",
+  "main": "index.js",
+  "dependencies": {
+      "azure-storage": "~2.6.0",
+      "uuid": "~3.1.0",
+      "readline-sync": "~1.4.7"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Azure-Samples/storage-blobs-node-quickstart.git"
+  },
+  "keywords": [
+    "Azure",
+    "Storage",
+    "Quick",
+    "Start",
+    "Blob",
+    "BlockBlob",
+    "Upload",
+    "Download",
+    "Container",
+    "List"
+  ],
+  "author": "Microsoft",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Azure-Samples/storage-blobs-node-quickstart/issues"
+  },
+  "homepage": "https://github.com/Azure-Samples/storage-blobs-node-quickstart#readme"
+}
