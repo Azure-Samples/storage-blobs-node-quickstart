@@ -1,57 +1,66 @@
-# Project Name
+# Contributing
 
-(short, 1-3 sentenced, description of the project)
+This project welcomes contributions and suggestions. Most contributions require you to agree to a
+Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
+the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
-## Features
+When you submit a pull request, a CLA-bot will automatically determine whether you need to provide
+a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions
+provided by the bot. You will only need to do this once across all repos using our CLA.
 
-This project framework provides the following features:
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
+For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
+contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-* Feature 1
-* Feature 2
-* ...
+# How to run this project
 
-## Getting Started
+## Create a storage account using the Azure portal
 
-### Prerequisites
+If you don't have an Azure subscription, create a [free account](https://azure.microsoft.com/free/?WT.mc_id=A261C142F) before you begin.
 
-(ideally very short, if any)
+First, create a new general-purpose storage account to use for this quickstart. 
 
-- OS
-- Library version
-- ...
+1. Go to the [Azure portal](https://portal.azure.com) and log in using your Azure account. 
+2. On the Hub menu, select **New** > **Storage** > **Storage account - blob, file, table, queue**. 
+3. Enter a name for your storage account. The name must be between 3 and 24 characters in length and may contain numbers and lowercase letters only. It must also be unique.
+4. Set `Deployment model` to **Resource manager**.
+5. Set `Account kind` to **General purpose**.
+6. Set `Performance` to **Standard**. 
+7. Set `Replication` to **Locally Redundant storage (LRS)**.
+8. Set `Storage service encryption` to **Disabled**.
+9. Set `Secure transfer required` to **Disabled**.
+10. Select your subscription. 
+11. For `resource group`, create a new one and give it a unique name. 
+12. Select the `Location` to use for your storage account.
+13. Check **Pin to dashboard** and click **Create** to create your storage account. 
 
-### Installation
+After your storage account is created, it is pinned to the dashboard. Click on it to open it. Under SETTINGS, click **Access keys**. Select a key and copy the CONNECTION STRING to the clipboard, then paste it into Notepad for later use.
 
-(ideally very short)
+## Clone this repo and install Azure Storage Node.js client library
 
-- npm install [package name]
-- mvn install
-- ...
+To complete this quickstart, make sure Node.js is correctly installed and then clone this repo.
 
-### Quickstart
-(Add steps to get up and running quickly)
+```
+git clone https://github.com/Azure-Samples/storage-blobs-node-quickstart
+```
 
-1. git clone [repository clone url]
-2. cd [respository name]
-3. ...
+Install Azure Storage Node.js client library by typing following commands:
+```
+cd storage-blobs-node-quickstart
+npm install
+```
 
+## Configure your storage connection string
 
-## Demo
+In the application, you must provide your storage connection string to create a `BlobService` object. Open the `index.js` file in your IDE. Replace **AzureStorageConnectionString** with your connection string. 
 
-A demo app is included to show how to use the project.
+```
+var connectionString = 'AzureStorageConnectionString';
+var blobService = storage.createBlobService(connectionString);
+```
 
-To run the demo, follow these steps:
+## Run it!
 
-(Add steps to start up the demo)
-
-1.
-2.
-3.
-
-## Resources
-
-(Any additional resources or related projects)
-
-- Link to supporting information
-- Link to similar sample
-- ...
+```
+node index.js
+```
