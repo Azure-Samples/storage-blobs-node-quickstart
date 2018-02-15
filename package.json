@@ -1,5 +1,5 @@
 {
-  "name": "blob-storage-quickstart-async",
+  "name": "blob-storage-quickstart",
   "version": "1.1.0",
   "description": "Learn to use Node.js to upload, download, list and delete block blobs in a container in Azure Blob storage",
   "main": "index.js",
