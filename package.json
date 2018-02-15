@@ -1,13 +1,14 @@
 {
-  "name": "storage-blobs-node-quickstart",
-  "version": "1.0.0",
-  "description": "Learn how to use Node.js to upload, download, and list block blobs in a container in Azure Blob storage",
+  "name": "blob-storage-quickstart-async",
+  "version": "1.1.0",
+  "description": "Learn to use Node.js to upload, download, list and delete block blobs in a container in Azure Blob storage",
   "main": "index.js",
   "dependencies": {
-      "azure-storage": "~2.6.0",
-      "uuid": "~3.1.0",
-      "readline-sync": "~1.4.7"
+    "azure-storage": "^2.8.0",
+    "dotenv": "^5.0.0",
+    "yargs": "^11.0.0"
   },
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
