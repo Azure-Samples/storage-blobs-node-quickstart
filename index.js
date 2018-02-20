@@ -35,7 +35,7 @@ const upload = () => {
 };
 
 const download = () => {
-    const dowloadFilePath = sourceFilePath;
+    const dowloadFilePath = sourceFilePath.replace('.txt', '.downloaded.txt');
     return new Promise((resolve, reject) => {
         blobService.getBlobToLocalFile(containerName, blobName, dowloadFilePath, err => {
             if(err) {
