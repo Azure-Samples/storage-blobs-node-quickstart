@@ -1,9 +1,9 @@
 require('dotenv').config();
 
-const fs = require('fs');
 const path = require('path');
-const storage = require('azure-storage');
 const args = require('yargs').argv;
+
+const storage = require('azure-storage');
 
 const blobService = storage.createBlobService();
 const containerName = 'test';
