@@ -2,11 +2,10 @@ require('dotenv').config();
 
 const path = require('path');
 const args = require('yargs').argv;
-
 const storage = require('azure-storage');
 
 const blobService = storage.createBlobService();
-const containerName = 'test';
+const containerName = 'test-container';
 const sourceFilePath = path.resolve('./example.txt');
 const blobName = path.basename(sourceFilePath, path.extname(sourceFilePath));
 
