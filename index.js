@@ -70,8 +70,13 @@ const deleteBlock = () => {
     });
 };
 
+const uploadAndList = () => {
+    return _module.upload().then(_module.list);
+};
+
 const _module = {
     "createContainer": createContainer,
+    "uploadAndList": uploadAndList,
     "upload": upload,
     "download": download,
     "delete": deleteBlock,
