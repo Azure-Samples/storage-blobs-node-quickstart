@@ -1,66 +1,53 @@
-# Contributing
 
-This project welcomes contributions and suggestions. Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
-When you submit a pull request, a CLA-bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
+# Storage Blobs Quickstart
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+The following sample includes the following features:
 
-# How to run this project
+- **Uses async/await**: The [Azure Storage SDK API](https://github.com/Azure/azure-storage-node) is still callback-based, but the approach in this sample modernizes the syntax. API calls are wrapped in `Promises` and are executed in the context of an `async/await` operation.
 
-## Create a storage account using the Azure portal
+- **Command-based interaction**: By passing a command to the `--command` parameter, you are able to explicitly tell the script which operation to execute (ex: upload, download, list, etc.)
+ 
+- **Uses environment variables**: This sample accesses the connection string from an environment variable. The use of environment variables is representative of how you would access sensitive information in production.
 
-If you don't have an Azure subscription, create a [free account](https://azure.microsoft.com/free/?WT.mc_id=A261C142F) before you begin.
+To run this sample, you need an [Azure account](https://azure.microsoft.com/free/), a [blob storage account](https://docs.microsoft.com/azure/storage/common/storage-create-storage-account), and the associated blob storage connection string.
 
-First, create a new general-purpose storage account to use for this quickstart. 
+## Set up
+First, clone the repository on your machine:
 
-1. Go to the [Azure portal](https://portal.azure.com) and log in using your Azure account. 
-2. On the Hub menu, select **New** > **Storage** > **Storage account - blob, file, table, queue**. 
-3. Enter a name for your storage account. The name must be between 3 and 24 characters in length and may contain numbers and lowercase letters only. It must also be unique.
-4. Set `Deployment model` to **Resource manager**.
-5. Set `Account kind` to **General purpose**.
-6. Set `Performance` to **Standard**. 
-7. Set `Replication` to **Locally Redundant storage (LRS)**.
-8. Set `Storage service encryption` to **Disabled**.
-9. Set `Secure transfer required` to **Disabled**.
-10. Select your subscription. 
-11. For `resource group`, create a new one and give it a unique name. 
-12. Select the `Location` to use for your storage account.
-13. Check **Pin to dashboard** and click **Create** to create your storage account. 
+    git clone https://github.com/Azure-Samples/storage-blobs-node-quickstart.git
 
-After your storage account is created, it is pinned to the dashboard. Click on it to open it. Under SETTINGS, click **Access keys**. Select a key and copy the CONNECTION STRING to the clipboard, then paste it into Notepad for later use.
+Then, switch to the appropriate folder:
 
-## Clone this repo and install Azure Storage Node.js client library
+    cd storage-blobs-node-quickstart
 
-To complete this quickstart, make sure Node.js is correctly installed and then clone this repo.
+Next, install the dependencies:
 
-```
-git clone https://github.com/Azure-Samples/storage-blobs-node-quickstart
-```
+    npm install
 
-Install Azure Storage Node.js client library by typing following commands:
-```
-cd storage-blobs-node-quickstart
-npm install
-```
+Now, add your blob storage connection string as an environment variable named `AZURE_STORAGE_CONNECTION_STRING` to a file named `.env`.
 
-## Configure your storage connection string
+> **Note**: This repository includes a file named `.env.example`. You can rename this file by removing `.example` and adding the correct value for your connection string in the `.env` file.
 
-In the application, you must provide your storage connection string to create a `BlobService` object. Open the `index.js` file in your IDE. Replace **AzureStorageConnectionString** with your connection string. 
+## Running the sample
 
-```
-var connectionString = 'AzureStorageConnectionString';
-var blobService = storage.createBlobService(connectionString);
-```
+Once the setup steps are complete, you can interact with the sample by passing a known command into the `--command` parameter.
 
-## Run it!
+For instance if you want to create a container in blob storage, then run the following command:
 
-```
-node index.js
-```
+    node index.js --command createContainer
+
+Commands available include:
+
+
+| Command | Description |
+|---------|---------|
+|`createContainer` | Creates a container named `test` (succeeds even if container already exists) |
+|`upload`          | Uploads the `example.txt` file |
+|`download`        | Downloads the contents of the `example` blob to `example.txt` |
+|`delete`          | Deletes the `example` blob |
+|`list`            | Lists the contents of the `test` container to the console |
+
+## Resources
+
+You can use the [Azure Storage explorer](https://azure.microsoft.com/features/storage-explorer/) to see the data in your Azure account.
