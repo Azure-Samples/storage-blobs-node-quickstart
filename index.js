@@ -1,4 +1,6 @@
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').load();
+}
 
 const path = require('path');
 const args = require('yargs').argv;
