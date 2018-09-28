@@ -6,9 +6,8 @@ The following sample includes the following features:
 
 - **Uses async/await**: The [Azure Storage SDK API](https://github.com/Azure/azure-storage-node) is still callback-based, but the approach in this sample modernizes the syntax. API calls are wrapped in `Promises` and are executed in the context of an `async/await` operation.
 
-- **Command-based interaction**: By passing a command to the `--command` parameter, you are able to explicitly tell the script which operation to execute (ex: upload, download, list, etc.)
- 
 - **Uses environment variables**: This sample accesses the connection string from an environment variable. The use of environment variables is representative of how you would access sensitive information in production.
+
 
 To run this sample, you need an [Azure account](https://azure.microsoft.com/free/), a [blob storage account](https://docs.microsoft.com/azure/storage/common/storage-create-storage-account), and the associated blob storage connection string.
 
@@ -31,22 +30,28 @@ Now, add your blob storage connection string as an environment variable named `A
 
 ## Running the sample
 
-Once the setup steps are complete, you can interact with the sample by passing a known command into the `--command` parameter.
+Once the setup, you can run the sample by using `npm start`.
 
-For instance if you want to create a container in blob storage, then run the following command:
+```bash
+npm start
+```
+When complete, the application should produce output similar to the following:
 
-    node index.js --command createContainer
-
-Commands available include:
-
-
-| Command | Description |
-|---------|---------|
-|`createContainer` | Creates a container named `test` (succeeds even if container already exists) |
-|`upload`          | Uploads the `example.txt` file |
-|`download`        | Downloads the contents of the `example` blob to `example.txt` |
-|`delete`          | Deletes the `example` blob |
-|`list`            | Lists the contents of the `test` container to the console |
+```bash
+Containers:
+ - container-one
+ - container-two
+Container "demo" is created
+Blob "quickstart.txt" is uploaded
+Local file "./readme.md" is uploaded
+Blobs in "demo" container:
+ - quickstart.txt
+ - readme.md
+Blob downloaded blob content: "hello Blob SDK"
+Blob "quickstart.txt" is deleted
+Container "demo" is deleted
+Done
+```
 
 ## Resources
 
