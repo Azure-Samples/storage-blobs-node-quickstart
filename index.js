@@ -3,15 +3,23 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const path = require('path');
-const args = require('yargs').argv;
 const storage = require('azure-storage');
 
 const blobService = storage.createBlobService();
-const containerName = 'test-container';
-const sourceFilePath = path.resolve('./example.txt');
-const blobName = path.basename(sourceFilePath, path.extname(sourceFilePath));
 
-const createContainer = () => {
+const listContainers = async () => {
+    return new Promise((resolve, reject) => {
+        blobService.listContainersSegmented(null, (err, data) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve({ message: `${data.entries.length} containers`, containers: data.entries });
+            }
+        });
+    });
+};
+
+const createContainer = async (containerName) => {
     return new Promise((resolve, reject) => {
         blobService.createContainerIfNotExists(containerName, { publicAccessLevel: 'blob' }, err => {
             if (err) {
@@ -23,44 +31,58 @@ const createContainer = () => {
     });
 };
 
-const upload = () => {
+const uploadString = async (containerName, blobName, text) => {
     return new Promise((resolve, reject) => {
-        blobService.createBlockBlobFromLocalFile(containerName, blobName, sourceFilePath, err => {
+        blobService.createBlockBlobFromText(containerName, blobName, text, err => {
             if (err) {
                 reject(err);
             } else {
-                resolve({ message: `Upload of '${blobName}' complete` });
+                resolve({ message: `Text "${text}" is written to blob storage` });
             }
         });
     });
 };
 
-const download = () => {
-    const dowloadFilePath = sourceFilePath.replace('.txt', '.downloaded.txt');
+const uploadLocalFile = async (containerName, filePath) => {
     return new Promise((resolve, reject) => {
-        blobService.getBlobToLocalFile(containerName, blobName, dowloadFilePath, err => {
+        const fullPath = path.resolve(filePath);
+        const blobName = path.basename(filePath);
+        blobService.createBlockBlobFromLocalFile(containerName, blobName, fullPath, err => {
             if (err) {
                 reject(err);
             } else {
-                resolve({ message: `Download of '${blobName}' complete` });
+                resolve({ message: `Local file "${filePath}" is uploaded` });
             }
         });
     });
 };
 
-const list = () => {
+const listBlobs = async (containerName) => {
     return new Promise((resolve, reject) => {
         blobService.listBlobsSegmented(containerName, null, (err, data) => {
             if (err) {
                 reject(err);
             } else {
-                resolve({ message: `Items in container '${containerName}':`, data: data });
+                resolve({ message: `${data.entries.length} blobs in '${containerName}'`, blobs: data.entries });
             }
         });
     });
 };
 
-const deleteBlock = () => {
+const downloadBlob = async (containerName, blobName) => {
+    const dowloadFilePath = path.resolve('./' + blobName.replace('.txt', '.downloaded.txt'));
+    return new Promise((resolve, reject) => {
+        blobService.getBlobToText(containerName, blobName, (err, data) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve({ message: `Blob downloaded "${data}"`, text: data });
+            }
+        });
+    });
+};
+
+const deleteBlob = async (containerName, blobName) => {
     return new Promise((resolve, reject) => {
         blobService.deleteBlobIfExists(containerName, blobName, err => {
             if (err) {
@@ -72,44 +94,56 @@ const deleteBlock = () => {
     });
 };
 
-const uploadAndList = () => {
-    return _module.upload().then(_module.list);
+const deleteContainer = async (containerName) => {
+    return new Promise((resolve, reject) => {
+        blobService.deleteContainer(containerName, err => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve({ message: `Container '${containerName}' deleted` });
+            }
+        });
+    });
 };
 
-const _module = {
-    "createContainer": createContainer,
-    "uploadAndList": uploadAndList,
-    "upload": upload,
-    "download": download,
-    "delete": deleteBlock,
-    "list": list
-};
+const execute = async () => {
 
-const commandExists = () => exists = !!_module[args.command];
+    const containerName = "demo";
+    const blobName = "quickstart.txt";
+    const content = "hello Blob SDK";
+    const localFilePath = "./readme.md";
+    let response;
 
-const executeCommand = async () => {
-    const response = await _module[args.command]();
+    console.log("Containers:");
+    response = await listContainers();
+    response.containers.forEach((container) => console.log(` -  ${container.name}`));
 
+    const containerDoesNotExist = response.containers.findIndex((container) => container.name === containerName) === -1;
+
+    if (containerDoesNotExist) {
+        await createContainer(containerName);
+        console.log(`Container "${containerName}" is created`);
+    }
+
+    await uploadString(containerName, blobName, content);
+    console.log(`Blob "${blobName}" is uploaded`);
+
+    response = await uploadLocalFile(containerName, localFilePath);
     console.log(response.message);
 
-    if (response.data) {
-        response.data.entries.forEach(entry => {
-            console.log('Name:', entry.name, ' Type:', entry.blobType)
-        });
-    }
-};
+    console.log(`Blobs in "${containerName}" container:`);
+    response = await listBlobs(containerName);
+    response.blobs.forEach((blob) => console.log(` - ${blob.name}`));
 
-try {
-    const cmd = args.command;
+    response = await downloadBlob(containerName, blobName);
+    console.log(`Downloaded blob content: ${response.text}"`);
 
-    console.log(`Executing '${cmd}'...`);
+    await deleteBlob(containerName, blobName);
+    console.log(`Blob "${blobName}" is deleted`);
 
-    if (commandExists()) {
-        executeCommand();
-    } else {
-        console.log(`The '${cmd}' command does not exist. Try one of these:`);
-        Object.keys(_module).forEach(key => console.log(` - ${key}`));
-    }
-} catch (e) {
-    console.log(e);
+    await deleteContainer(containerName);
+    console.log(`Container "${containerName}" is deleted`);
+
 }
+
+execute().then(() => console.log("Done")).catch((e) => console.log(e));
