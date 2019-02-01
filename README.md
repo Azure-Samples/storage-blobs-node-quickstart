@@ -2,6 +2,9 @@
 
 # Storage Blobs Quickstart
 
+> **WARNING** 
+> You are viewing a tutorial for the legacy version of the Azure Storage Node.js SDK. Please go [here](https://github.com/Azure-Samples/azure-storage-js-v10-quickstart) to view the latest JavaScript SDK (v10).
+
 The following sample includes the following features:
 
 - **Uses async/await**: The [Azure Storage SDK API](https://github.com/Azure/azure-storage-node) is still callback-based, but the approach in this sample modernizes the syntax. API calls are wrapped in `Promises` and are executed in the context of an `async/await` operation.
