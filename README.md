@@ -1,4 +1,12 @@
-
+---
+page_type: sample
+languages:
+- javascript
+products:
+- azure
+description: "You are viewing a tutorial for the legacy version of the Azure Storage Node.js SDK."
+urlFragment: storage-blobs-node-quickstart
+---
 
 # Storage Blobs Quickstart
 
