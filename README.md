@@ -11,7 +11,8 @@ urlFragment: storage-blobs-node-quickstart
 # Storage Blobs Quickstart
 
 > **WARNING** 
-> You are viewing a tutorial for the legacy version of the Azure Storage Node.js SDK. Please go [here](https://github.com/Azure-Samples/azure-storage-js-v10-quickstart) to view the latest JavaScript SDK (v10).
+> Samples in this repository use older package `azure-storage` for Azure Storage Blobs.
+We recommend that you refer to the [samples that use the new package](https://github.com/Azure-Samples/azure-sdk-for-js-storage-blob-upload-download) `@azure/storage-blob` instead.
 
 The following sample includes the following features:
 
