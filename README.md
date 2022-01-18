@@ -67,4 +67,4 @@ Done
 
 ## Resources
 
-You can use the [Azure Storage explorer](https://azure.microsoft.com/features/storage-explorer/) to see the data in your Azure account.
+You can use the [Azure Storage Explorer](https://azure.microsoft.com/features/storage-explorer/) to see the data in your Azure account.
