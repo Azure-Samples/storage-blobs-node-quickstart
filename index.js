@@ -57,13 +57,13 @@ const uploadLocalFile = async (containerName, filePath) => {
     });
 };
 
-const listBlobs = async (containerName) => {
+const listBlobs = async (containerName, continuationToken) => {
     return new Promise((resolve, reject) => {
-        blobService.listBlobsSegmented(containerName, null, (err, data) => {
+        blobService.listBlobsSegmented(containerName, continuationToken, (err, data) => {
             if (err) {
                 reject(err);
             } else {
-                resolve({ message: `${data.entries.length} blobs in '${containerName}'`, blobs: data.entries });
+                resolve(data);
             }
         });
     });
@@ -132,8 +132,18 @@ const execute = async () => {
     console.log(response.message);
 
     console.log(`Blobs in "${containerName}" container:`);
-    response = await listBlobs(containerName);
-    response.blobs.forEach((blob) => console.log(` - ${blob.name}`));
+    let blobs = [];
+    response = await listBlobs(containerName,null);
+    if (response.continuationToken) {
+      console.log(`Blobs in "${containerName}" container while there are more segments:`)
+      let shouldContinue = true;
+      do {
+        response = await listBlobs(containerName, response.continuationToken);
+        blobs = blobs.concat(response.entries);
+        shouldContinue = response.continuationToken !== null;
+      } while(shouldContinue)
+    }
+    blobs.forEach((blob) => console.log(` - ${blob.name}`));
 
     response = await downloadBlob(containerName, blobName);
     console.log(`Downloaded blob content: ${response.text}"`);
