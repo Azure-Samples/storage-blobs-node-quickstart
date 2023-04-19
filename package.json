@@ -4,7 +4,7 @@
   "description": "Learn to use Node.js to upload, download, list and delete block blobs in a container in Azure Blob storage",
   "main": "index.js",
   "dependencies": {
-    "azure-storage": "^2.8.0",
+    "azure-storage": "^2.10.7",
     "dotenv": "^5.0.0",
     "yargs": "^11.0.0"
   },
